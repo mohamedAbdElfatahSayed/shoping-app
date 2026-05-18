@@ -1,15 +1,17 @@
 import { Order } from "@/app/models/Order";
 import { connectDB } from "@/lib/mongodb";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-// 🔵 GET ORDER BY ID
+// 🔵 GET
 export async function GET(
-  req: Request,
-  { params }: { params:Promise <{ id: string }> }
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectDB();
-     const {id}=await params
+
+    const { id } = await context.params;
+
     const order = await Order.findById(id);
 
     if (!order) {
@@ -28,15 +30,17 @@ export async function GET(
   }
 }
 
+// 🟡 PUT
 export async function PUT(
-  req: Request,
-  { params }: { params: Promise<{ id: string }> }
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectDB();
 
+    const { id } = await context.params;
     const body = await req.json();
-     const {id}=await params
+
     const order = await Order.findByIdAndUpdate(
       id,
       { status: body.status },
@@ -59,14 +63,24 @@ export async function PUT(
   }
 }
 
+// 🔴 DELETE
 export async function DELETE(
-  req: Request,
-  { params }: { params: { id: string } }
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectDB();
 
-    await Order.findByIdAndDelete(params.id);
+    const { id } = await context.params;
+
+    const deleted = await Order.findByIdAndDelete(id);
+
+    if (!deleted) {
+      return NextResponse.json(
+        { message: "Order not found" },
+        { status: 404 }
+      );
+    }
 
     return NextResponse.json({
       message: "Order deleted successfully",

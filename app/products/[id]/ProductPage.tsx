@@ -42,7 +42,7 @@ const ProductPage = ({ id }: { id: string }) => {
 
         dispatch(
             addToCart({
-                userId: user.id,
+                userId: user.id ||"undefined",
                 productId: product._id,
                 name: product.name,
                 image: product.images?.[0]?.url,
