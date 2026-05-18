@@ -56,11 +56,7 @@ const sidebarLinks = [
     href: "/profile",
     icon: UserCircle,
   },
-  {
-    title: "Settings",
-    href: "/admin/settings",
-    icon: Settings,
-  },
+ 
 ];
 
 const AdminLayout = ({
