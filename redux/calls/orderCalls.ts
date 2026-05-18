@@ -1,7 +1,7 @@
+import { Domain } from "@/utils/constent";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const Domain = "http://localhost:3000/api";
 
 export const getUserOrders = createAsyncThunk(
   "orders/getUserOrders",
