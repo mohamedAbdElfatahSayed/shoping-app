@@ -13,7 +13,7 @@ const ProductsTable = () => {
 
   const { products, pages } = useSelector(
     (state: RootState) => state.products
-  );
+  ); 
 
   const [page, setPage] = useState(1);
 

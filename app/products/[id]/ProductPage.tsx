@@ -17,39 +17,51 @@ const ProductPage = ({ id }: { id: string }) => {
         (state: RootState) => state.products
     );
 
-    const { user } = useSelector(
-        (state: RootState) => state.auth
-    );
+    const { user } = useSelector((state: RootState) => state.auth);
 
-    const [mainImage, setMainImage] = useState("");
+    const [mainImage, setMainImage] = useState<string>("");
 
     useEffect(() => {
         dispatch(getProduct(id));
     }, [dispatch, id]);
 
     useEffect(() => {
-        if (product?.images?.length > 0) {
+        if (product?.images?.length) {
             setMainImage(product.images[0].url);
+        } else {
+            setMainImage("/favicon.ico");
         }
     }, [product]);
 
     const handleAddToCart = () => {
-        if (!user) {
+        if (!user?.id) {
             toast.error("Go To Login");
             router.push("/login");
             return;
         }
 
+        if (!product?._id) {
+            toast.error("Product not loaded yet");
+            return;
+        }
+
+        if ((product?.countInStock ?? 0) <= 0) {
+            toast.error("Out of stock");
+            return;
+        }
+
+        const image = product.images?.[0]?.url ?? "";
+
         dispatch(
             addToCart({
-                userId: user.id ||"undefined",
+                userId: user.id,
                 productId: product._id,
                 name: product.name,
-                image: product.images?.[0]?.url,
+                image,
                 price: product.discountPrice || product.price,
                 quantity: 1,
-                color: product.colors?.[0],
-                size: product.size?.[0],
+                color: product.colors?.[0] ?? "",
+                size: product.size?.[0] ?? "",
             })
         );
     };
@@ -70,27 +82,24 @@ const ProductPage = ({ id }: { id: string }) => {
         );
     }
 
-  return (
-    <div className="max-w-7xl mx-auto p-4 md:p-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+    return (
+        <div className="max-w-7xl mx-auto p-4 md:p-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
 
-            {/* Images Section */}
-            <div>
-                {/* Main Image */}
-                <div className="relative w-full h-[500px] rounded-3xl overflow-hidden border bg-gray-100">
-                    <Image
-                        src={mainImage || "/favicon.ico"}
-                        alt={product.name}
-                        fill
-                        priority
-                        className="object-cover"
-                    />
-                </div>
+                {/* Images Section */}
+                <div>
+                    <div className="relative w-full h-[500px] rounded-3xl overflow-hidden border bg-gray-100">
+                        <Image
+                            src={mainImage || "/favicon.ico"}
+                            alt={product?.name || "product image"}
+                            fill
+                            priority
+                            className="object-cover"
+                        />
+                    </div>
 
-                {/* Small Images */}
-                <div className="flex gap-3 mt-4 flex-wrap">
-                    {product.images?.map(
-                        (img: { url: string }, index: number) => (
+                    <div className="flex gap-3 mt-4 flex-wrap">
+                        {product.images?.map((img: any, index: number) => (
                             <div
                                 key={index}
                                 onClick={() => setMainImage(img.url)}
@@ -101,192 +110,174 @@ const ProductPage = ({ id }: { id: string }) => {
                                 }`}
                             >
                                 <Image
-                                    src={img.url}
-                                    alt={product.name}
+                                    src={img.url || "/favicon.ico"}
+                                    alt={product?.name || "product thumbnail"}
                                     fill
                                     className="object-cover"
                                 />
                             </div>
-                        )
-                    )}
-                </div>
-            </div>
-
-            {/* Product Info */}
-            <div className="space-y-6">
-
-                {/* Category */}
-                <span className="text-sm text-gray-500 uppercase tracking-wide">
-                    {product.category}
-                </span>
-
-                {/* Name */}
-                <h1 className="text-4xl font-bold">
-                    {product.name}
-                </h1>
-
-                {/* Rating */}
-                <div className="flex items-center gap-2">
-                    <span className="text-yellow-500 text-xl">
-                        ⭐⭐⭐⭐⭐
-                    </span>
-
-                    <span className="text-gray-500">
-                        ({product.reviews?.length || 0} Reviews)
-                    </span>
-                </div>
-
-                {/* Price */}
-                <div className="flex items-center gap-4">
-                    <span className="text-4xl font-bold text-black">
-                        $
-                        {product.discountPrice
-                            ? product.discountPrice
-                            : product.price}
-                    </span>
-
-                    {product.discountPrice && (
-                        <span className="text-2xl text-gray-400 line-through">
-                            ${product.price}
-                        </span>
-                    )}
-                </div>
-
-                {/* Description */}
-                <p className="text-gray-600 leading-7 text-lg">
-                    {product.description}
-                </p>
-
-                {/* Brand */}
-                <div className="flex items-center gap-2">
-                    <span className="font-semibold">
-                        Brand:
-                    </span>
-
-                    <span className="text-gray-700">
-                        {product.brand}
-                    </span>
-                </div>
-
-                {/* Stock */}
-                <div className="flex items-center gap-2">
-                    <span className="font-semibold">
-                        Stock:
-                    </span>
-
-                    <span
-                        className={`font-medium ${
-                            product.countInStock > 0
-                                ? "text-green-600"
-                                : "text-red-600"
-                        }`}
-                    >
-                        {product.countInStock > 0
-                            ? "In Stock"
-                            : "Out Of Stock"}
-                    </span>
-                </div>
-
-                {/* Colors */}
-                {product.colors?.length > 0 && (
-                    <div>
-                        <h3 className="font-semibold mb-3">
-                            Colors
-                        </h3>
-
-                        <div className="flex gap-3 flex-wrap">
-                            {product.colors.map(
-                                (color: string, index: number) => (
-                                    <button
-                                        key={index}
-                                        className="px-5 py-2 rounded-full border hover:bg-black hover:text-white transition"
-                                    >
-                                        {color}
-                                    </button>
-                                )
-                            )}
-                        </div>
+                        ))}
                     </div>
-                )}
-
-                {/* Sizes */}
-                {product.size?.length > 0 && (
-                    <div>
-                        <h3 className="font-semibold mb-3">
-                            Sizes
-                        </h3>
-
-                        <div className="flex gap-3 flex-wrap">
-                            {product.size.map(
-                                (size: string, index: number) => (
-                                    <button
-                                        key={index}
-                                        className="w-12 h-12 border rounded-xl hover:bg-black hover:text-white transition"
-                                    >
-                                        {size}
-                                    </button>
-                                )
-                            )}
-                        </div>
-                    </div>
-                )}
-
-                {/* Buttons */}
-                <div className="flex gap-4 pt-4">
-
-                    <button
-                        onClick={handleAddToCart}
-                        className="flex-1 py-4 rounded-2xl bg-black text-white font-semibold hover:bg-gray-800 transition"
-                    >
-                        Add To Cart
-                    </button>
-
-                    <button
-                        className="px-6 py-4 rounded-2xl border hover:bg-gray-100 transition"
-                    >
-                        ❤️
-                    </button>
                 </div>
-            </div>
-        </div>
 
-        {/* Reviews Section */}
-        <div className="mt-20">
-            <h2 className="text-3xl font-bold mb-8">
-                Customer Reviews
-            </h2>
-
-            {product.reviews?.length > 0 ? (
+                {/* Product Info */}
                 <div className="space-y-6">
-                    {product.reviews.map((review: any) => (
-                        <div
-                            key={review._id}
-                            className="border rounded-2xl p-5"
+
+                    <span className="text-sm text-gray-500 uppercase">
+                        {product.category}
+                    </span>
+
+                    <h1 className="text-4xl font-bold">
+                        {product.name}
+                    </h1>
+
+                    <div className="flex items-center gap-2">
+                        <span className="text-yellow-500 text-xl">
+                            ⭐⭐⭐⭐⭐
+                        </span>
+
+                        <span className="text-gray-500">
+                            ({product.reviews?.length || 0} Reviews)
+                        </span>
+                    </div>
+
+                    <div className="flex items-center gap-4">
+                        <span className="text-4xl font-bold">
+                            ${product.discountPrice || product.price}
+                        </span>
+
+                        {product.discountPrice && (
+                            <span className="text-2xl text-gray-400 line-through">
+                                ${product.price}
+                            </span>
+                        )}
+                    </div>
+
+                    <p className="text-gray-600 text-lg">
+                        {product.description}
+                    </p>
+
+                    <div>
+                        <span className="font-semibold">Brand:</span>{" "}
+                        <span>{product.brand}</span>
+                    </div>
+
+                    <div>
+                        <span className="font-semibold">Stock:</span>{" "}
+                        <span
+                            className={
+                                product.countInStock > 0
+                                    ? "text-green-600"
+                                    : "text-red-600"
+                            }
                         >
-                            <div className="flex items-center justify-between mb-2">
-                                <h3 className="font-semibold">
-                                    {review.userName}
-                                </h3>
+                            {product.countInStock > 0
+                                ? "In Stock"
+                                : "Out Of Stock"}
+                        </span>
+                    </div>
 
-                                <span className="text-yellow-500">
-                                    ⭐ {review.rating}/5
-                                </span>
+                    {/* Colors */}
+                    {product.colors?.length > 0 && (
+                        <div>
+                            <h3 className="font-semibold mb-2">
+                                Colors
+                            </h3>
+
+                            <div className="flex gap-2 flex-wrap">
+                                {product.colors.map(
+                                    (color: string, i: number) => (
+                                        <button
+                                            key={i}
+                                            className="px-4 py-2 border rounded-full hover:bg-black hover:text-white"
+                                        >
+                                            {color}
+                                        </button>
+                                    )
+                                )}
                             </div>
-
-                            <p className="text-gray-600">
-                                {review.comment}
-                            </p>
                         </div>
-                    ))}
+                    )}
+
+                    {/* Sizes */}
+                    {product.size?.length > 0 && (
+                        <div>
+                            <h3 className="font-semibold mb-2">
+                                Sizes
+                            </h3>
+
+                            <div className="flex gap-2 flex-wrap">
+                                {product.size.map(
+                                    (size: string, i: number) => (
+                                        <button
+                                            key={i}
+                                            className="w-12 h-12 border rounded-xl hover:bg-black hover:text-white"
+                                        >
+                                            {size}
+                                        </button>
+                                    )
+                                )}
+                            </div>
+                        </div>
+                    )}
+
+                    <div className="flex gap-4 pt-4">
+                        <button
+                            onClick={handleAddToCart}
+                            disabled={product.countInStock === 0}
+                            className={`flex-1 py-4 rounded-2xl text-white font-semibold transition ${
+                                product.countInStock === 0
+                                    ? "bg-gray-400 cursor-not-allowed"
+                                    : "bg-black hover:bg-gray-800"
+                            }`}
+                        >
+                            Add To Cart
+                        </button>
+
+                        <button className="px-6 py-4 rounded-2xl border hover:bg-gray-100">
+                            ❤️
+                        </button>
+                    </div>
                 </div>
-            ) : (
-                <p className="text-gray-500">
-                    No Reviews Yet
-                </p>
-            )}
+            </div>
+
+            {/* Reviews */}
+            <div className="mt-20">
+                <h2 className="text-3xl font-bold mb-8">
+                    Customer Reviews
+                </h2>
+
+                {product.reviews?.length > 0 ? (
+                    <div className="space-y-6">
+                        {product.reviews.map((review: any) => (
+                            <div
+                                key={review._id}
+                                className="border rounded-2xl p-5"
+                            >
+                                <div className="flex justify-between mb-2">
+                                    <h3 className="font-semibold">
+                                        {review.userName}
+                                    </h3>
+
+                                    <span className="text-yellow-500">
+                                        ⭐ {review.rating}/5
+                                    </span>
+                                </div>
+
+                                <p className="text-gray-600">
+                                    {review.comment}
+                                </p>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <p className="text-gray-500">
+                        No Reviews Yet
+                    </p>
+                )}
+            </div>
         </div>
-    </div>
-);
+    );
 };
 
 export default ProductPage;

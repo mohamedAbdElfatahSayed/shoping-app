@@ -48,7 +48,6 @@ export async function POST(req: NextRequest) {
     await connectDB();
 
     const body = await req.json();
-
     const {
       userId,
       productId,
@@ -99,7 +98,7 @@ if (existingItem) {
     );
 
     await cart.save();
-
+    console.log(cart)
     return NextResponse.json({
       cartItems: cart.cartItems,
       totalPrice: cart.totalPrice,

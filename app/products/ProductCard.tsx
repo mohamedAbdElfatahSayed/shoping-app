@@ -29,7 +29,7 @@ const ProductCard = ({ product }: { product: any }) => {
               ? product.images?.[1]?.url || product.images?.[0]?.url
               : product.images?.[0]?.url
           }
-          alt={product.name}
+          alt={product?.name ||"product image"}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
 
