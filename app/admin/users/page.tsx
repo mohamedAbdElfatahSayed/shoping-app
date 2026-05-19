@@ -1,12 +1,5 @@
-import React from 'react'
-import UsersPage from './Users'
+import UsersPage from "./Users";
 
-const UserPage = () => {
-  return (
-    <div>
-      <UsersPage/>
-    </div>
-  )
+export default function Page() {
+  return <UsersPage />;
 }
-
-export default UserPage

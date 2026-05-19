@@ -22,7 +22,6 @@ export async function POST(req: NextRequest) {
     }
 
     const formData = await req.formData();
-
     // ✅ files (safe)
     const files = formData
       .getAll("images")
@@ -68,7 +67,7 @@ export async function POST(req: NextRequest) {
       sizes,
       images: safeImages,
     };
-
+     
     // ✅ validation
     const validation = createProductSchema.safeParse(productData);
 
@@ -79,7 +78,7 @@ export async function POST(req: NextRequest) {
         },
         { status: 400 }
       );
-    }
+    }   
 
     // ✅ create product
     const product = await Product.create({

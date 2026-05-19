@@ -16,12 +16,16 @@ import {
 import { useEffect } from "react";
 import { getAllProducts } from "@/redux/calls/produtsCalls";
 import { getAllUsers } from "@/redux/calls/usersCalls";
+import { getAllOrders } from "@/redux/calls/orderCalls";
 
 const Dashboard = () => {
   const { users } = useSelector((state: RootState) => state.users);
    
      const { products,page,total } = useSelector(
        (state: RootState) => state.products
+     );
+     const { orders } = useSelector(
+       (state: RootState) => state.orders
      );
  
   const totalUsers = users?.length || 0;
@@ -33,6 +37,7 @@ const Dashboard = () => {
   useEffect(() => {
     dispatch(getAllProducts(page));
     dispatch(getAllUsers())
+    dispatch(getAllOrders())
 
   }, [dispatch,page]);
 
@@ -41,7 +46,7 @@ const Dashboard = () => {
     <div className="p-6 space-y-8">
 
       {/* Header */}
-      <div>
+      <div >
         <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
           Dashboard
         </h1>
@@ -114,6 +119,23 @@ const Dashboard = () => {
 
               <h2 className="text-3xl font-bold mt-2">
                 {total}
+              </h2>
+            </div>
+
+            <div className="bg-white/20 p-3 rounded-xl">
+              <ShoppingCart size={30} />
+            </div>
+          </div>
+        </div>
+        </Link>
+        <Link href={`/admin/orders`}>
+        <div className="p-5 rounded-2xl bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm opacity-80">All Orders</p>
+
+              <h2 className="text-3xl font-bold mt-2">
+                {orders.length}
               </h2>
             </div>
 

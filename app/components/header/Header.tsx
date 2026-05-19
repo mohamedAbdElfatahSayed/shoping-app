@@ -400,9 +400,11 @@ const Header = () => {
            <Link href={`/cart?userId=${user?.id}`}>
             <ShoppingCart size={20} />
 
-            <span className="text-sm">
-              Cart (3)
-            </span>
+           {cartItems.length > 0 && (
+             <span className="text-sm">
+               Cart ({cartItems.length})
+             </span>
+           )}
            </Link>
           </div>
 

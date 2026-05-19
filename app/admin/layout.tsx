@@ -87,6 +87,8 @@ const AdminLayout = ({
       >
         {/* Logo */}
         <div className="mb-10">
+                
+
           <h1 className="text-2xl font-bold">
             Admin Panel
           </h1>
@@ -153,9 +155,11 @@ const AdminLayout = ({
           "
         >
           <div>
-            <h2 className="text-xl font-bold">
+            <Link href={`/admin/dashboard`}>
+            <h2 className="text-xl font-bold bg-blue-500 cursor-pointer text-white  p-2 rounded-2xl hover:bg-blue-600">
               Admin Dashboard
             </h2>
+            </Link>
 
             <p className="text-sm text-gray-500">
               Welcome back 👋

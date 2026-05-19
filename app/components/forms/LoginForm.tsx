@@ -3,22 +3,24 @@
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "@/redux/calls/authCalls";
 import { RootState } from "@/redux/store";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { AppDispatch } from "@/redux/store";
 import { toast } from "react-toastify";
 
 export default function LoginPage() {
-  const router = useRouter();
+   const router = useRouter();
+
+
 
   const dispatch = useDispatch<AppDispatch>();
 
   const { user,loading, error } = useSelector(
     (state: RootState) => state.auth
   );
-  console.log(user);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
 
  const handleLogin = async () => {
   if (email === "") return toast.error("email required");
