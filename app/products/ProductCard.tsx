@@ -15,6 +15,7 @@ const ProductCard = ({ product }: { product: any }) => {
   
 
   return (
+    //product card
     <div className="w-full max-w-sm bg-white rounded-2xl  shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col group">
 
       {/* Image */}
