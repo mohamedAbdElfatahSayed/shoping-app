@@ -50,7 +50,6 @@ const productsSlice = createSlice({
       })
       .addCase(getAllProducts.fulfilled, (state, action) => {
         state.loading = false;
-        console.log(action.payload)
         state.products = action.payload.products;
         state.pages = action.payload.pages;
        state.page = action.payload.page;
