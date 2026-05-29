@@ -2,9 +2,8 @@ import React from 'react'
 import AdminOrdersPage from './OrdersPage'
 
 const page = () => {
-  return (
-    <div><AdminOrdersPage/></div>
-  )
+  return <AdminOrdersPage/>
+  
 }
 
 export default page

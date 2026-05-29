@@ -4,20 +4,23 @@ import Header from "./components/header/Header";
 import { ToastContainer } from "react-toastify";
 import ReduxProvider from "./providers";
 import Footer from "./components/footer/Footer";
+import Providers from "./ThemeProvider";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+  <html lang="en" suppressHydrationWarning>
       <body>
+        <ReduxProvider>
+          <Providers>
+            <Header />
 
-          <ReduxProvider>
-            
-          <Header />
             {children}
-            <ToastContainer position="top-right" />
-            <Footer/>
-          </ReduxProvider>
 
+            <ToastContainer position="top-right" />
+
+            <Footer />
+          </Providers>
+        </ReduxProvider>
       </body>
     </html>
   );

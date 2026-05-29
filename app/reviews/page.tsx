@@ -1,8 +1,9 @@
-import CartPage from "./CartPage"
+
+import Reviews from './ReviewsPage'
 
 const page = () => {
   return (
-            <CartPage/>
+    <Reviews />
   )
 }
 

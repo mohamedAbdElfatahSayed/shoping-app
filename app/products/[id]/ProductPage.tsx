@@ -54,14 +54,14 @@ const ProductPage = ({ id }: { id: string }) => {
 
         dispatch(
             addToCart({
-                userId: user.id,
-                productId: product._id,
-                name: product.name,
-                image,
-                price: product.discountPrice || product.price,
-                quantity: 1,
-                color: product.colors?.[0] ?? "",
-                size: product.size?.[0] ?? "",
+                  userId: user.id,
+                  productId: product._id,
+                  name: product.name,
+                  image: product.images?.[0]?.url,
+                  price: product.discountPrice || product.price,
+                  quantity: 1,
+                  color: product.colors?.[0],
+                  size: product.size?.[0],
             })
         );
     };

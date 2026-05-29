@@ -39,7 +39,7 @@ export async function POST(req: Request) {
     if (!isMatch) return unauthorized();
 
     const accessToken = jwt.sign(
-      { id: user._id, isAdmin: user.isAdmin },
+      { id: user._id, isAdmin: user.isAdmin,username:user.username },
       process.env.JWT_SECRET!,
       { expiresIn: "15m" }
     );

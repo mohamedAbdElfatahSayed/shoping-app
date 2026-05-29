@@ -113,7 +113,7 @@ export async function GET(req: NextRequest) {
 
   const skip = (page - 1) * limit;
 
-  const products = await Product.find()
+  let products = await Product.find()
     .skip(skip)
     .limit(limit);
 

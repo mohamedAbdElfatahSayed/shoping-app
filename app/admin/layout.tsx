@@ -5,95 +5,47 @@ import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
   Users,
-  Settings,
   UserCircle,
   LogOut,
   AppWindowMacIcon,
-  Grid,
-  Store,
-  Tag,
-  ShoppingCart,
   Plus,
   Package,
+  ShoppingCart,
 } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { logoutUser } from "@/redux/calls/authCalls";
 
 const sidebarLinks = [
-  {
-    title: "Admin",
-    href: "/admin",
-    icon: AppWindowMacIcon,
-  },
-  {
-    title: "Dashboard",
-    href: "/admin/dashboard",
-    icon: LayoutDashboard,
-  },
-  {
-    title: "Users",
-    href: "/admin/users",
-    icon: Users,
-  },
-  {
-    title: "Products",
-    href: "/admin/products",
-    icon: ShoppingCart,
-  },
-  {
-    title: "Create Product",
-    href: "/admin/create-product",
-    icon: Plus,
-  },
-  {
-    title: "Orders",
-    href: "/admin/orders",
-    icon: Package,
-  },
-  {
-    title: "Profile",
-    href: "/profile",
-    icon: UserCircle,
-  },
- 
+  { title: "Admin", href: "/admin", icon: AppWindowMacIcon },
+  { title: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
+  { title: "Users", href: "/admin/users", icon: Users },
+  { title: "Products", href: "/admin/products", icon: ShoppingCart },
+  { title: "Create Product", href: "/admin/create-product", icon: Plus },
+  { title: "Orders", href: "/admin/orders", icon: Package },
+  { title: "Profile", href: "/profile", icon: UserCircle },
 ];
 
-const AdminLayout = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
+const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
-  const router=useRouter()
-  const dispatch=useDispatch<AppDispatch>()
-  const handleLogout=()=>{
-    dispatch(logoutUser())
-    router.replace('/login')
+  const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
 
-  }
-  
+  const handleLogout = () => {
+    dispatch(logoutUser());
+    router.replace("/login");
+  };
+
   return (
-    <div className="min-h-screen flex bg-gray-100 dark:bg-black">
+    <div className="min-h-screen flex bg-gray-100 dark:bg-zinc-900 text-gray-900 dark:text-gray-100">
 
       {/* Sidebar */}
-      <aside
-        className="
-          w-64 hidden md:flex flex-col
-          border-r border-gray-200 dark:border-gray-800
-          bg-white dark:bg-zinc-950
-          p-5
-        "
-      >
+      <aside className="w-64 hidden md:flex flex-col border-r border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-5">
+
         {/* Logo */}
         <div className="mb-10">
-                
-
-          <h1 className="text-2xl font-bold">
-            Admin Panel
-          </h1>
-
-          <p className="text-sm text-gray-500">
+          <h1 className="text-2xl font-bold">Admin Panel</h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400">
             Manage your application
           </p>
         </div>
@@ -102,7 +54,6 @@ const AdminLayout = ({
         <nav className="flex flex-col gap-2 flex-1">
           {sidebarLinks.map((link) => {
             const Icon = link.icon;
-
             const active = pathname === link.href;
 
             return (
@@ -112,11 +63,11 @@ const AdminLayout = ({
                 className={`
                   flex items-center gap-3
                   px-4 py-3 rounded-xl
-                  transition-all
+                  transition
                   ${
                     active
-                      ? "bg-blue-500 text-white"
-                      : "hover:bg-gray-100 dark:hover:bg-zinc-900"
+                      ? "bg-blue-600 text-white"
+                      : "hover:bg-gray-100 dark:hover:bg-zinc-800"
                   }
                 `}
               >
@@ -128,8 +79,8 @@ const AdminLayout = ({
         </nav>
 
         {/* Logout */}
-        <button onClick={handleLogout}
-          type="submit"
+        <button
+          onClick={handleLogout}
           className="
             mt-auto flex items-center gap-2
             px-4 py-3 rounded-xl
@@ -144,55 +95,37 @@ const AdminLayout = ({
 
       {/* Main */}
       <main className="flex-1 p-6">
-        
+
         {/* Topbar */}
-        <div
-          className="
-            mb-6 p-4 rounded-2xl
-            bg-white dark:bg-zinc-950
-            border border-gray-200 dark:border-gray-800
-            flex items-center justify-between
-          "
-        >
+        <div className="mb-6 p-4 rounded-2xl bg-white dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 flex items-center justify-between">
+
           <div>
-            <Link href={`/admin/dashboard`}>
-            <h2 className="text-xl font-bold bg-blue-500 cursor-pointer text-white  p-2 rounded-2xl hover:bg-blue-600">
-              Admin Dashboard
-            </h2>
+            <Link href="/admin/dashboard">
+              <h2 className="text-xl font-bold bg-blue-600 text-white p-2 rounded-xl hover:bg-blue-700 transition">
+                Admin Dashboard
+              </h2>
             </Link>
 
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-500 dark:text-gray-400">
               Welcome back 👋
             </p>
           </div>
 
-          {/* Admin Avatar */}
-          <div className="flex items-center gap-3">
-           
-
-            <div>
-              <p className="font-semibold">
-                Admin
-              </p>
-
-              <p className="text-xs text-gray-500">
-                administrator
-              </p>
-            </div>
+          {/* Admin Info */}
+          <div className="text-right">
+            <p className="font-semibold">Admin</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              administrator
+            </p>
           </div>
+
         </div>
 
-        {/* Page Content */}
-        <div
-          className="
-            bg-white dark:bg-zinc-950
-            border border-gray-200 dark:border-gray-800
-            rounded-2xl p-6
-            min-h-[80vh]
-          "
-        >
+        {/* Content */}
+        <div className="bg-white dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 rounded-2xl p-6 min-h-[80vh]">
           {children}
         </div>
+
       </main>
     </div>
   );

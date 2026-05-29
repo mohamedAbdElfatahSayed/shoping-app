@@ -98,7 +98,6 @@ if (existingItem) {
     );
 
     await cart.save();
-    console.log(cart)
     return NextResponse.json({
       cartItems: cart.cartItems,
       totalPrice: cart.totalPrice,

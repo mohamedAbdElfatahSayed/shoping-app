@@ -90,3 +90,38 @@ export const deleteProduct = createAsyncThunk(
     }
   }
 );
+
+// redux/calls/productCalls.ts
+
+
+export const searchProducts = createAsyncThunk(
+  "products/searchProducts",
+
+  async (
+    {
+      keyword,
+      pageNumber,
+    }: {
+      keyword: string;
+      pageNumber?: number;
+    },
+    thunkAPI
+  ) => {
+    try {
+      const response = await fetch(
+        `${Domain}/products/search?keyword=${keyword}&page=${pageNumber || 1}&limit=6`
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        return thunkAPI.rejectWithValue(data.message);
+      }
+
+      return data;
+
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);

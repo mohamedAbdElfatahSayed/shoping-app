@@ -13,6 +13,7 @@ export const verifyToken = (req: NextRequest) => {
   const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
     id: string;
     isAdmin: boolean;
+    
   };
 
  
