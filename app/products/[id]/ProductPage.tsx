@@ -241,41 +241,7 @@ const ProductPage = ({ id }: { id: string }) => {
                 </div>
             </div>
 
-            {/* Reviews */}
-            <div className="mt-20">
-                <h2 className="text-3xl font-bold mb-8">
-                    Customer Reviews
-                </h2>
-
-                {product.reviews?.length > 0 ? (
-                    <div className="space-y-6">
-                        {product.reviews.map((review: any) => (
-                            <div
-                                key={review._id}
-                                className="border rounded-2xl p-5"
-                            >
-                                <div className="flex justify-between mb-2">
-                                    <h3 className="font-semibold">
-                                        {review.userName}
-                                    </h3>
-
-                                    <span className="text-yellow-500">
-                                        ⭐ {review.rating}/5
-                                    </span>
-                                </div>
-
-                                <p className="text-gray-600">
-                                    {review.comment}
-                                </p>
-                            </div>
-                        ))}
-                    </div>
-                ) : (
-                    <p className="text-gray-500">
-                        No Reviews Yet
-                    </p>
-                )}
-            </div>
+           
         </div>
     );
 };
