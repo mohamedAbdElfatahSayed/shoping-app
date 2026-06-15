@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { PlusCircle } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
