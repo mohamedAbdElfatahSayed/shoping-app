@@ -31,26 +31,7 @@ const Footer = () => {
         {/* Center */}
         <div className="flex items-center gap-6 text-sm">
 
-          <Link href="/admin/dashboard" className="
-            text-gray-600 dark:text-gray-300
-            hover:text-blue-500 transition
-          ">
-            Dashboard
-          </Link>
-
-          <Link href="/admin/users" className="
-            text-gray-600 dark:text-gray-300
-            hover:text-blue-500 transition
-          ">
-            Users
-          </Link>
-
-          <Link href="/admin/orders" className="
-            text-gray-600 dark:text-gray-300
-            hover:text-blue-500 transition
-          ">
-            Orders
-          </Link>
+          
 
           <Link href="/products" className="
             text-gray-600 dark:text-gray-300
