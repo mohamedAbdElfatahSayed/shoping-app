@@ -206,6 +206,9 @@ const Header = () => {
           border-t border-gray-200 dark:border-zinc-800
         ">
 
+         { user?.isAdmin && (<Link href="/admin/dashboard" onClick={() => setOpen(false)} className="py-2 text-sm text-gray-700 dark:text-gray-300 hover:text-blue-500">
+            Admin
+          </Link>)}
           <Link href="/" onClick={() => setOpen(false)} className="py-2 text-sm text-gray-700 dark:text-gray-300 hover:text-blue-500">
             Home
           </Link>

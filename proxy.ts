@@ -29,6 +29,7 @@ export async function proxy(req: NextRequest) {
     return NextResponse.next();
   }
 
+
   // ❌ 3. protected routes
   if (!accessToken) {
     if (!refreshToken) {
